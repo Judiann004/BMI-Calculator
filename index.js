@@ -1,27 +1,28 @@
 const btnEl = document.getElementById("btn");
-const emojiNameEl = document.getElementById("emoji-name");
+const bmiInputEl = document.getElementById("bmi-result");
+const weightConditionEl = document.getElementById("weight-condition");
 
-const emoji = [];
+function calculateBMI() {
+  const heightValue = document.getElementById("height").value / 100;
+  const weightValue = document.getElementById("weight").value;
 
-async function getEmoji() {
-  let reponse = await fetch(
-    "https://emoji-api.com/emojis?access_key=5b384a6090acb13139bc41e666f65ddf8fdaf412"
-  );
+  const bmiValue = weightValue / (heightValue * heightValue);
 
-  data = await reponse.json();
+  bmiInputEl.value = bmiValue;
 
-  for (let i = 0; i < 1500; i++) {
-    emoji.push({
-      emojiName: data[i].character,
-      emojiCode: data[i].unicodeName,
-    });
+  if (bmiValue < 18.5) {
+    weightConditionEl.innerHTML = "Underweight";
+  }else if (bmiValue >= 18.5 && bmiValue <= 24.9) {
+    weightConditionEl.innerHTML = "Normal weight";
+    else if (bmiValue >= 25 && bmiValue <= 29.9) {
+        weightConditionEl.innerHTML = "Over weight";
+        else if (bmiValue >= 30) {
+            weightConditionEl.innerHTML = "Obesity";
+        }
+    }
   }
 }
 
-getEmoji();
+calculateBMI()
 
-btnEl.addEventListener("click", () => {
-  const randomNum = Math.floor(Math.random() * emoji.length);
-  btnEl.innerText = emoji[randomNum].emojiName;
-  emojiNameEl.innerHTML = emoji[randomNum].emojiCode;
-});
+btnEl.addEventListener("click", calculateBMI);
